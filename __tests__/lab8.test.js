@@ -29,18 +29,32 @@ describe('Basic user flow for SPA ', () => {
 
   it('Test3: Clicking first <journal-entry>, new URL should contain /#entry1', async () => {
     // implement test3: Clicking on the first journal entry should update the URL to contain “/#entry1”
+    let exp = "/#entry1";
+
+    const entry = await page.$$("journal-entry");
+    const text = entry[0].getProperty('entry');
+    console.log(text);
+    page.click(entry[0]);
+    let url = page.url();
+    console.log(url);
+
+    expect(url).toContain(exp);
+
 
   });
 
   it('Test4: On first Entry page - checking page header title', async () => {
     // implement test4: Clicking on the first journal entry should update the header text to “Entry 1” 
-
+    let exp = "Entry 1";
+    const entry = await page.$$("journal-entry");
+    page.click(entry[0].getProperty('entry'));
+    title = await page.$('header');
+    expect(title).toBe(exp);
   });
 
   it('Test5: On first Entry page - checking <entry-page> contents', async () => {
-    /*
-     implement test5: Clicking on the first journal entry should contain the following contents: 
-        { 
+    let exp = 
+         { 
           title: 'You like jazz?',
           date: '4/25/2021',
           content: "According to all known laws of aviation, there is no way a bee should be able to fly. Its wings are too small to get its fat little body off the ground. The bee, of course, flies anyway because bees don't care what humans think is impossible.",
@@ -49,7 +63,11 @@ describe('Basic user flow for SPA ', () => {
             alt: 'bee with sunglasses'
           }
         }
-      */
+    const entry = await page.$$("journal-entry");
+    page.click(entry[0]);
+    const data = await page.$('entry-page');
+    expect(data).toBe(exp);
+        
 
   }, 10000);
 
